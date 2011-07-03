@@ -9,13 +9,13 @@ README = read('README.md')
 
 setup(
     name = "django-form-designer",
-    version = "0.1a8",
-    url = 'http://github.com/philomat/django-form-designer',
+    version = "0.1a9",
+    url = 'git://github.com/Troyhy/django-form-designer.git',
     license = 'BSD',
     description = "Design contact forms, search forms etc from the Django admin, without writing any code. Integrates with Django CMS.",
     long_description = README,
 
-    author = u'Samuel Lüscher',
+    author = u'Samuel Luscher',
     author_email = 'philomat@popkultur.net',
     packages = [
         'form_designer',
