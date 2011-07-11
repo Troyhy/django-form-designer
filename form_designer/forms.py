@@ -22,7 +22,16 @@ class DesignedForm(forms.Form):
             else:
                 def_field.initial = initial_data.getlist(def_field.name)
         self.fields[def_field.name] = get_class(def_field.field_class)(**def_field.get_form_field_init_args())
-
+        
+    
+    def as_stylished(self):
+        "Returns this form rendered as HTML <tr>s -- excluding the <table></table>."
+        return self._html_output(
+            normal_row = u'<tr%(html_class_attr)s><th>%(label)s%(help_text)s</th><td>%(errors)s%(field)s</td></tr>',
+            error_row = u'<tr><td colspan="2">%s</td></tr>',
+            row_ender = u'</td></tr>',
+            help_text_html = u'<span class="form_help_text">%s</span>',
+            errors_on_separate_row = False)
 
 class FormDefinitionFieldInlineForm(forms.ModelForm):
     class Meta:
