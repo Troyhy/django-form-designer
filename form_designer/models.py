@@ -158,7 +158,7 @@ class FormDefinitionField(models.Model):
     form_definition = models.ForeignKey(FormDefinition)
     field_class = models.CharField(_('Field class'), choices=settings.FIELD_CLASSES, max_length=32)
     position = models.IntegerField(_('Position'), blank=True, null=True)
-
+    
     name = models.SlugField(_('Name'), max_length=255)
     label = models.CharField(_('Label'), max_length=255, blank=True, null=True)
     required = models.BooleanField(_('Required'), default=True)
@@ -178,7 +178,10 @@ class FormDefinitionField(models.Model):
     decimal_places = models.IntegerField(_('Decimal places'), blank=True, null=True)
 
     regex = models.CharField(_('Regular Expression'), max_length=255, blank=True, null=True)
-
+    
+    send_email = models.BooleanField(_('Send form to email'), help_text=('If this is enabled and field type is email address, this form is send to this email'),default=False )
+    message_template = TemplateTextField(_('Message template'), help_text=_('Your form fields are available as template context. Example: "{{ message }}" if you have a field named `message`. To iterate over all fields, use the variable `data` (a list containing a dictionary for each form field, each containing the elements `name`, `label`, `value`).'), blank=True, null=True)
+  
     choice_model_choices = settings.CHOICE_MODEL_CHOICES
     choice_model = ModelNameField(_('Data model'), max_length=255, blank=True, null=True, choices=choice_model_choices, help_text=('your_app.models.ModelName' if not choice_model_choices else None))
     choice_model_empty_label = models.CharField(_('Empty label'), max_length=255, blank=True, null=True)
