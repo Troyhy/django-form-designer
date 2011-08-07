@@ -31,7 +31,6 @@ class FormDefinitionFieldInline(admin.StackedInline):
         (_('Regex'), {'fields': ['regex']}),
         (_('Choices'), {'fields': ['choice_values', 'choice_labels']}),
         (_('Model Choices'), {'fields': ['choice_model', 'choice_model_empty_label']}),
-        (_('Advanced e-mail'), {'fields': ['send_email', 'message_template']}),
     ]
 
 class FormDefinitionAdmin(admin.ModelAdmin):
