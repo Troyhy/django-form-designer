@@ -47,6 +47,7 @@ class FormDefinition(models.Model):
     allow_get_initial = models.BooleanField(_('Allow initial values via URL'), help_text=_('If enabled, you can fill in form fields by adding them to the query string.'), default=True)
     message_template = TemplateTextField(_('Message template'), help_text=_('Your form fields are available as template context. Example: "{{ message }}" if you have a field named `message`. To iterate over all fields, use the variable `data` (a list containing a dictionary for each form field, each containing the elements `name`, `label`, `value`).'), blank=True, null=True)
     form_template_name = models.CharField(_('Form template'), max_length=255, choices=settings.FORM_TEMPLATES, blank=True, null=True)
+    is_recaptcha = models.BooleanField(_('Enable recaptcha'), default=False)
 
     class Meta:
         verbose_name = _('Form')
