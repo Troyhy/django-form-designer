@@ -14,6 +14,14 @@ class DesignedForm(forms.Form):
         for def_field in form_definition.formdefinitionfield_set.all():
             self.add_defined_field(def_field, initial_data)
         self.fields[form_definition.submit_flag_name] = forms.BooleanField(required=False, initial=1, widget=widgets.HiddenInput)
+        if form_definition.is_recaptcha:
+            if 'captcha' in django_settings.INSTALLED_APPS:
+                from captcha.fields import ReCaptchaField
+                try:
+                    self.fields['captcha'] = ReCaptchaField() 
+                except:
+                    pass
+
 
     def add_defined_field(self, def_field, initial_data=None):
         if initial_data and initial_data.has_key(def_field.name):
