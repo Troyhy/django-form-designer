@@ -1,28 +1,37 @@
 import os
 
-from django import forms
+#from django import forms
 from django.forms import widgets
+from django.forms import Form, ModelForm
+from django import forms
+
+
 from django.conf import settings as django_settings
 from django.utils.translation import ugettext as _
 
 from form_designer import settings
 from form_designer.models import get_class, FormDefinitionField, FormDefinition
 
-class DesignedForm(forms.Form):
+from math_captcha import MathCaptchaForm
+#class DesignedForm(forms.Form, MathCaptchaForm):
+#    pass
+
+
+
+class DesignedForm(MathCaptchaForm):
     def __init__(self, form_definition, initial_data=None, *args, **kwargs):
-        super(DesignedForm, self).__init__(*args, **kwargs)
+        super(MathCaptchaForm, self).__init__(*args, **kwargs)    
         for def_field in form_definition.formdefinitionfield_set.all():
             self.add_defined_field(def_field, initial_data)
         self.fields[form_definition.submit_flag_name] = forms.BooleanField(required=False, initial=1, widget=widgets.HiddenInput)
-        if form_definition.is_recaptcha:
-            if 'captcha' in django_settings.INSTALLED_APPS:
-                from captcha.fields import ReCaptchaField
-                try:
-                    self.fields['captcha'] = ReCaptchaField() 
-                except:
-                    pass
-
-
+        #if form_definition.is_recaptcha:
+            #if 'captcha' in django_settings.INSTALLED_APPS:
+            #    from captcha.fields import ReCaptchaField
+            #    try:
+            #        self.fields['captcha'] = ReCaptchaField() 
+            #    except:
+            #        pass
+            
     def add_defined_field(self, def_field, initial_data=None):
         if initial_data and initial_data.has_key(def_field.name):
             if not def_field.field_class in ('django.forms.MultipleChoiceField', 'django.forms.ModelMultipleChoiceField'):
@@ -41,7 +50,8 @@ class DesignedForm(forms.Form):
             help_text_html = u'<span class="form_help_text">%s</span>',
             errors_on_separate_row = False)
 
-class FormDefinitionFieldInlineForm(forms.ModelForm):
+
+class FormDefinitionFieldInlineForm(ModelForm):
     class Meta:
         model = FormDefinitionField
 
@@ -51,7 +61,7 @@ class FormDefinitionFieldInlineForm(forms.ModelForm):
         return self.cleaned_data['choice_model']
 
 
-class FormDefinitionForm(forms.ModelForm):
+class FormDefinitionForm(ModelForm):
     class Meta:
         model = FormDefinition
 
